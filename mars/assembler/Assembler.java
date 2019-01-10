@@ -335,8 +335,9 @@ public class Assembler
 					ExtendedInstruction inst = (ExtendedInstruction) statement.getInstruction();
 					String basicAssembly = statement.getBasicAssemblyStatement();
 					int sourceLine = statement.getSourceLine();
-					MIPSprogram origProgram = statement.getSourceMIPSprogram();
-					TokenList theTokenList = new Tokenizer(origProgram).tokenizeLine(sourceLine,
+MIPSprogram origProgram = statement.getSourceMIPSprogram();
+// TokenList theTokenList = new Tokenizer(origProgram).tokenizeLine(sourceLine,
+					TokenList theTokenList = new Tokenizer().tokenizeLine(sourceLine,
 							basicAssembly, errors, false);
 
 					// ////////////////////////////////////////////////////////////////////////////
@@ -368,14 +369,16 @@ public class Assembler
 							System.out.println("PSEUDO generated: " + instruction);
 						// For generated instruction: tokenize, build program
 						// statement, add to list.
-						TokenList newTokenList = new Tokenizer(origProgram).tokenizeLine(sourceLine,
+// TokenList newTokenList = new Tokenizer(origProgram).tokenizeLine(sourceLine,
+						TokenList newTokenList = new Tokenizer().tokenizeLine(sourceLine,
 								instruction, errors, false);
 						ArrayList instrMatches = this.matchInstruction(newTokenList.get(0));
 						Instruction instr = OperandFormat.bestOperandMatch(newTokenList,
 											instrMatches);
 						// Only first generated instruction is linked to original source
 						ProgramStatement ps = new ProgramStatement(
-							origProgram,
+							this.fileCurrentlyBeingAssembled,
+// origProgram,
 							(instrNumber == 0) ? statement.getSource() : "", newTokenList,
 							newTokenList, instr, textAddress.get(), statement.getSourceLine());
 						textAddress.increment(Instruction.INSTRUCTION_LENGTH);
@@ -627,10 +630,10 @@ public class Assembler
 			}
 			if(OperandFormat.tokenOperandMatch(tokens, inst, errors))
 			{
-				// programStatement = new ProgramStatement(this.fileCurrentlyBeingAssembled, source,
-				// 										tokenList, tokens, inst, textAddress.get(), sourceLineNumber);
-				programStatement = new ProgramStatement(token.getOriginalProgram(), source,
-													tokenList, tokens, inst, textAddress.get(), sourceLineNumber);
+				programStatement = new ProgramStatement(this.fileCurrentlyBeingAssembled, source,
+														tokenList, tokens, inst, textAddress.get(), sourceLineNumber);
+				// programStatement = new ProgramStatement(token.getOriginalProgram(), source,
+													// tokenList, tokens, inst, textAddress.get(), sourceLineNumber);
 
 				// instruction length is 4 for all basic instruction, varies for extended instruction
 				// Modified to permit use of compact expansion if address fits
