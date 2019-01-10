@@ -244,22 +244,24 @@ public class Settings extends Observable
 	/** RGB color for register highlighted foreground */
 	public static final int REGISTER_HIGHLIGHT_FOREGROUND = 11;
 	// Match the above by position.
-	private static final String[] colorSettingsKeys =
-	{
+	private static final String[] colorSettingsKeys = {
 		"EvenRowBackground", "EvenRowForeground", "OddRowBackground", "OddRowForeground",
 		"TextSegmentHighlightBackground", "TextSegmentHighlightForeground",
 		"TextSegmentDelaySlotHighlightBackground", "TextSegmentDelaySlotHighlightForeground",
 		"DataSegmentHighlightBackground", "DataSegmentHighlightForeground",
 		"RegisterHighlightBackground", "RegisterHighlightForeground"
 	};
-	/** Last resort default values for color settings;
-	*  will use only if neither the Preferences nor the properties file work.
-	*  If you wish to change, do so before instantiating the Settings object.
-	*  Must match key by list position.
-	*/
-	private static String[] defaultColorSettingsValues =
-	{
-		"0x00e0e0e0", "0", "0x00ffffff", "0", "0x00ffff99", "0", "0x0033ff00", "0", "0x0099ccff", "0", "0x0099cc55", "0"
+
+	/**
+	 * Last resort default values for color settings;
+	 * will use only if neither the Preferences nor the properties file work.
+	 * If you wish to change, do so before instantiating the Settings object.
+	 * Must match key by list position.
+	 */
+	private static String[] defaultColorSettingsValues = {
+		"0x00101010", "0x00ffffff", "0x00252525", "0x00ffffff",
+		"0x00635900", "0x00ffffff", "0x000c3501", "0x00ffffff",
+		"0x0026384b", "0x00ffffff", "0x00466221", "0x00ffffff"
 	};
 
 
