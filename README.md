@@ -4,7 +4,7 @@ MARS has been jointly developed by [Pete Sanderson](http://faculty.otterbein.edu
 
 ## Purpose of this repo
 
-This is a fork of Jarrett's mirror of the MARS Assembler source code, mainly for personal use (though I am not averse to contributions) / adding a dark theme.
+This is a fork of Jarrett's mirror of the MARS Assembler source code, mainly for personal use (though I am not averse to contributions) / adding more theming options.
 
 Huge thanks to Jarrett for maintaining the [original fork](https://github.com/JarrettBillingsley/MARS_Assembler) of MARS.
 
