@@ -243,6 +243,10 @@ public class Settings extends Observable
 	public static final int REGISTER_HIGHLIGHT_BACKGROUND = 10;
 	/** RGB color for register highlighted foreground */
 	public static final int REGISTER_HIGHLIGHT_FOREGROUND = 11;
+	/** RGB color for the enabled editor background */
+	public static final int EDITOR_ENABLED_BACKGROUND = 12;
+	/** RGB color for the disabled editor background */
+	public static final int EDITOR_DISABLED_BACKGROUND = 13;
 	// Match the above by position.
 	private static final String[] colorSettingsKeys =
 	{
@@ -250,16 +254,20 @@ public class Settings extends Observable
 		"TextSegmentHighlightBackground", "TextSegmentHighlightForeground",
 		"TextSegmentDelaySlotHighlightBackground", "TextSegmentDelaySlotHighlightForeground",
 		"DataSegmentHighlightBackground", "DataSegmentHighlightForeground",
-		"RegisterHighlightBackground", "RegisterHighlightForeground"
+		"RegisterHighlightBackground", "RegisterHighlightForeground",
+		"EditorEnabledBackground", "EditorDisabledBackground"
 	};
-	/** Last resort default values for color settings;
-	*  will use only if neither the Preferences nor the properties file work.
-	*  If you wish to change, do so before instantiating the Settings object.
-	*  Must match key by list position.
-	*/
+
+	/** 
+	 * Last resort default values for color settings;
+	 * will use only if neither the Preferences nor the properties file work.
+	 * If you wish to change, do so before instantiating the Settings object.
+	 * Must match key by list position.
+	 */
 	private static String[] defaultColorSettingsValues =
 	{
-		"0x00e0e0e0", "0", "0x00ffffff", "0", "0x00ffff99", "0", "0x0033ff00", "0", "0x0099ccff", "0", "0x0099cc55", "0"
+		"0x00e0e0e0", "0", "0x00ffffff", "0", "0x00ffff99", "0", "0x0033ff00", "0", "0x0099ccff", "0", "0x0099cc55", "0",
+		"0x00ffffff", "0x00c0c0c0"
 	};
 
 
@@ -719,6 +727,24 @@ public class Settings extends Observable
 			return null;
 	}
 
+	/**
+	 * Retrieve the editor's background color setting for when it is enabled,
+	 * or editable.
+	 * @return Color
+	 */
+	public Color getEditorEnabledBackground() {
+		return getColorSettingByPosition(EDITOR_ENABLED_BACKGROUND);
+	}
+
+	/**
+	 * Retrieve the editor's background color setting for when it is disabled,
+	 * or cannot be edited.
+	 * @return Color
+	 */
+	public Color getEditorDisabledBackground() {
+		return getColorSettingByPosition(EDITOR_DISABLED_BACKGROUND);
+	}
+
 
 	/**
 	 *  Retrieve a default Font setting
@@ -806,6 +832,11 @@ public class Settings extends Observable
 		return length;
 	}
 
+	/**
+	 * Get the class name of the current Swing look and feel, or the system look and feel if none exists.
+	 * In the event that a class name has been set that is not installed in the system, this method will
+	 * return the system look and feel instead.
+	 */
 	public String getThemeLookAndFeel() {
 		for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
 			if (info.getClassName().equals(stringSettingsValues[THEME_LOOK_AND_FEEL]))
@@ -1187,6 +1218,10 @@ public class Settings extends Observable
 		setStringSetting(EDITOR_POPUP_PREFIX_LENGTH, "" + length);
 	}
 
+	/**
+	 * Set the Swing look and feel class name. This doesn't do anything to verify that the class name is valid; that
+	 * is done by the getter method.
+	 */
 	public void setThemeLookAndFeel(String lookAndFeelClassName) {
 		setStringSetting(THEME_LOOK_AND_FEEL, lookAndFeelClassName);
 	}
@@ -1223,6 +1258,16 @@ public class Settings extends Observable
 			setChanged();
 			notifyObservers();
 		}
+	}
+
+	/**
+	 * Store the editor's enabled/disabled background colors.
+	 * @param enabledColor The editor's background color when it is enabled, or editable.
+	 * @param disabledColor The editor's background color when it is disabled, or cannot be edited.
+	 */
+	public void setEditorBackground(Color enabledColor, Color disabledColor) {
+		setColorSetting(EDITOR_ENABLED_BACKGROUND, enabledColor);
+		setColorSetting(EDITOR_DISABLED_BACKGROUND, disabledColor);
 	}
 
 
