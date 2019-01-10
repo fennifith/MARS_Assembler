@@ -7,6 +7,7 @@ import java.util.*;
 import java.util.prefs.*;
 import java.awt.Color;
 import java.awt.Font;
+import javax.swing.UIManager;
 
 /*
 Copyright (c) 2003-2013,  Pete Sanderson and Kenneth Vollmar
@@ -153,15 +154,17 @@ public class Settings extends Observable
 	public static final int EDITOR_TAB_SIZE = 5;
 	/** Number of letters to be matched by editor's instruction guide before popup generated (if popup enabled) */
 	public static final int EDITOR_POPUP_PREFIX_LENGTH = 6;
+
+	public static final int THEME_LOOK_AND_FEEL = 7;
 	// Match the above by position.
-	private static final String[] stringSettingsKeys = { "ExceptionHandler", "TextColumnOrder", "LabelSortState", "MemoryConfiguration", "CaretBlinkRate", "EditorTabSize", "EditorPopupPrefixLength" };
+	private static final String[] stringSettingsKeys = { "ExceptionHandler", "TextColumnOrder", "LabelSortState", "MemoryConfiguration", "CaretBlinkRate", "EditorTabSize", "EditorPopupPrefixLength", "ThemeLookAndFeel" };
 
 	/** Last resort default values for String settings;
 	*  will use only if neither the Preferences nor the properties file work.
 	*  If you wish to change, do so before instantiating the Settings object.
 	*  Must match key by list position.
 	*/
-	private static String[] defaultStringSettingsValues = { "", "0 1 2 3 4", "0", "", "500", "8", "2" };
+	private static String[] defaultStringSettingsValues = { "", "0 1 2 3 4", "0", "", "500", "8", "2", "" };
 
 
 	// FONT SETTINGS.  Each array position has associated name.
@@ -803,6 +806,15 @@ public class Settings extends Observable
 		return length;
 	}
 
+	public String getThemeLookAndFeel() {
+		for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+			if (info.getClassName().equals(stringSettingsValues[THEME_LOOK_AND_FEEL]))
+				return info.getClassName();
+		}
+
+		return UIManager.getSystemLookAndFeelClassName();
+	}
+
 
 	/**
 	 * Get the text editor default tab size in characters
@@ -1173,6 +1185,10 @@ public class Settings extends Observable
 	public void setEditorPopupPrefixLength(int length)
 	{
 		setStringSetting(EDITOR_POPUP_PREFIX_LENGTH, "" + length);
+	}
+
+	public void setThemeLookAndFeel(String lookAndFeelClassName) {
+		setStringSetting(THEME_LOOK_AND_FEEL, lookAndFeelClassName);
 	}
 
 	/**

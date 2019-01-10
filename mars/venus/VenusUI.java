@@ -77,6 +77,7 @@ public class VenusUI extends JFrame
 			settingsExtended, settingsAssembleOnOpen, settingsAssembleAll, settingsClearRunIOOnAssemble,
 			settingsWarningsAreErrors, settingsStartAtMain, settingsDelayedBranching, settingsProgramArguments, settingsSelfModifyingCode;
 	private JMenuItem settingsExceptionHandler, settingsEditor, settingsHighlighting, settingsMemoryConfiguration;
+	private JMenu settingsTheme;
 	private JMenuItem helpHelp, helpAbout;
 
 	// components of the toolbar
@@ -101,7 +102,7 @@ public class VenusUI extends JFrame
 			settingsClearRunIOOnAssembleAction,
 			settingsWarningsAreErrorsAction, settingsStartAtMainAction, settingsProgramArgumentsAction,
 			settingsDelayedBranchingAction, settingsExceptionHandlerAction, settingsEditorAction,
-			settingsHighlightingAction, settingsMemoryConfigurationAction, settingsSelfModifyingCodeAction;
+			settingsHighlightingAction, settingsThemeAction, settingsMemoryConfigurationAction, settingsSelfModifyingCodeAction;
 	private Action helpHelpAction, helpAboutAction;
 
 
@@ -115,11 +116,9 @@ public class VenusUI extends JFrame
 		super(s);
 
 		// JB: set the look and feel cause Swing looks terrible
-		try
-		{
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		}
-		catch(Exception e) {}
+		try {
+			UIManager.setLookAndFeel(Globals.getSettings().getThemeLookAndFeel());
+		} catch(Exception e) {}
 		mainUI = this;
 		Globals.setGui(this);
 		this.editor = new Editor(this);
@@ -454,6 +453,11 @@ public class VenusUI extends JFrame
 					"View and modify Execute Tab highlighting colors",
 					null, null,
 					mainUI);
+			settingsThemeAction = new SettingsThemeAction("Theme...",
+					null,
+					"Change the application theme",
+					null, null,
+					mainUI);
 			settingsExceptionHandlerAction  = new SettingsExceptionHandlerAction("Exception Handler...",
 					null,
 					"If set, the specified exception handler file will be included in all Assemble operations.",
@@ -626,6 +630,23 @@ public class VenusUI extends JFrame
 		settingsProgramArguments.setSelected(Globals.getSettings().getProgramArguments());
 		settingsEditor = new JMenuItem(settingsEditorAction);
 		settingsHighlighting = new JMenuItem(settingsHighlightingAction);
+
+		settingsTheme = new JMenu(settingsThemeAction);
+		for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+			final String settingsThemeClassName = info.getClassName();
+			JMenuItem settingsThemeInfo = new JMenuItem(info.getName());
+			settingsThemeInfo.addActionListener(e -> { 
+				try {
+					UIManager.setLookAndFeel(settingsThemeClassName);
+				} catch (Exception ignored) {}
+				SwingUtilities.updateComponentTreeUI(VenusUI.this);
+				VenusUI.this.pack();
+
+				Globals.getSettings().setThemeLookAndFeel(settingsThemeClassName);
+			});
+			settingsTheme.add(settingsThemeInfo);
+		}
+
 		settingsExceptionHandler = new JMenuItem(settingsExceptionHandlerAction);
 		settingsMemoryConfiguration = new JMenuItem(settingsMemoryConfigurationAction);
 
@@ -647,6 +668,7 @@ public class VenusUI extends JFrame
 		settings.addSeparator();
 		settings.add(settingsEditor);
 		settings.add(settingsHighlighting);
+		settings.add(settingsTheme);
 		settings.add(settingsExceptionHandler);
 		settings.add(settingsMemoryConfiguration);
 
