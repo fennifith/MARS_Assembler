@@ -34,6 +34,10 @@ public class TextAreaDefaults
 	public int electricScroll;
 	public int tabSize;
 
+	public Color enabledBackgroundColor;
+	public Color disabledBackgroundColor;
+	public Color foregroundColor;
+
 	public int cols;
 	public int rows;
 	public SyntaxStyle[] styles;
@@ -68,12 +72,16 @@ public class TextAreaDefaults
 		DEFAULTS.tabSize = mars.Globals.getSettings().getEditorTabSize();
 		DEFAULTS.electricScroll = 0;// was 3.  Will begin scrolling when cursor is this many lines from the edge.
 
+		DEFAULTS.enabledBackgroundColor = mars.Globals.getSettings().getEditorEnabledBackground();
+		DEFAULTS.disabledBackgroundColor = mars.Globals.getSettings().getEditorDisabledBackground();
+		DEFAULTS.foregroundColor = mars.Globals.getSettings().getEditorTextColor();
+
 		DEFAULTS.cols = 80;
 		DEFAULTS.rows = 25;
 		DEFAULTS.styles = SyntaxUtilities.getCurrentSyntaxStyles(); // was getDefaultSyntaxStyles()
-		DEFAULTS.caretColor = Color.black; // Color.red;
-		DEFAULTS.selectionColor = new Color(0xccccff);
-		DEFAULTS.lineHighlightColor = new Color(0xeeeeee);//0xe0e0e0);
+		DEFAULTS.caretColor = mars.Globals.getSettings().getEditorTextColor(); // Color.red;
+		DEFAULTS.selectionColor = mars.Globals.getSettings().getEditorSelectedTextBackground();
+		DEFAULTS.lineHighlightColor = mars.Globals.getSettings().getEditorSelectedLineBackground();
 		DEFAULTS.lineHighlight = mars.Globals.getSettings().getBooleanSetting(Settings.EDITOR_CURRENT_LINE_HIGHLIGHTING);
 		DEFAULTS.bracketHighlightColor = Color.black;
 		DEFAULTS.bracketHighlight = false; // assembly language doesn't need this.
