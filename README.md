@@ -9,6 +9,9 @@ This is a fork of Jarrett's mirror of the MARS Assembler source code, mainly for
 - `clean`, which stays as close as possible to the original source code and only contains the "features" that I add
 - `master`, which contains all of my changes, including a "dark theme" as the default settings.
 
+[![Build Status](https://travis-ci.com/fennifith/MARS_Assembler.svg)](https://travis-ci.com/fennifith/MARS_Assembler)
+[![Discord](https://img.shields.io/discord/514625116706177035.svg)](https://discord.gg/s5Se8vU)
+
 Huge thanks to Jarrett for maintaining the [original fork](https://github.com/JarrettBillingsley/MARS_Assembler) of MARS.
 
 ## Documentation
