@@ -113,7 +113,7 @@ public class SettingsEditorAction extends GuiAction
 		private SyntaxStyle[] defaultStyles, initialStyles, currentStyles;
 		private Font previewFont;
 
-		private JPanel dialogPanel, syntaxStylePanel, otherSettingsPanel; /////4 Aug 2010
+		private JPanel dialogPanel, syntaxStylePanel, genericColorsPanel, otherSettingsPanel; /////4 Aug 2010
 
 		private JSlider tabSizeSelector;
 		private JSpinner tabSizeSpinSelector, blinkRateSpinSelector, popupPrefixLengthSpinSelector;
@@ -128,6 +128,8 @@ public class SettingsEditorAction extends GuiAction
 
 		private int initialEditorTabSize, initialCaretBlinkRate, initialPopupGuidance;
 		private boolean initialLineHighlighting, initialGenericTextEditor, initialAutoIndent;
+
+		private Color genericEnabledBackground, genericDisabledBackground, genericTextColor, genericSelectedLineBackground, genericSelectedTextBackground;
 
 		public EditorFontDialog(Frame owner, String title, boolean modality, Font font)
 		{
@@ -145,15 +147,19 @@ public class SettingsEditorAction extends GuiAction
 			JPanel dialog = new JPanel(new BorderLayout());
 			JPanel fontDialogPanel = super.buildDialogPanel();
 			JPanel syntaxStylePanel = buildSyntaxStylePanel();
+			JPanel genericColorsPanel = buildGenericColorsPanel();
 			JPanel otherSettingsPanel = buildOtherSettingsPanel();
 			fontDialogPanel.setBorder(BorderFactory.createTitledBorder("Editor Font"));
 			syntaxStylePanel.setBorder(BorderFactory.createTitledBorder("Syntax Styling"));
+			genericColorsPanel.setBorder(BorderFactory.createTitledBorder("Generic Colors"));
 			otherSettingsPanel.setBorder(BorderFactory.createTitledBorder("Other Editor Settings"));
 			dialog.add(fontDialogPanel, BorderLayout.WEST);
 			dialog.add(syntaxStylePanel, BorderLayout.CENTER);
+			dialog.add(genericColorsPanel, BorderLayout.EAST);
 			dialog.add(otherSettingsPanel, BorderLayout.SOUTH);
 			this.dialogPanel = dialog; /////4 Aug 2010
 			this.syntaxStylePanel = syntaxStylePanel; /////4 Aug 2010
+			this.genericColorsPanel = genericColorsPanel;
 			this.otherSettingsPanel = otherSettingsPanel; /////4 Aug 2010
 			return dialog;
 		}
@@ -272,6 +278,12 @@ public class SettingsEditorAction extends GuiAction
 					break;
 				}
 			}
+
+			Globals.getSettings().setEditorEnabledBackground(genericEnabledBackground);
+			Globals.getSettings().setEditorDisabledBackground(genericDisabledBackground);
+			Globals.getSettings().setEditorTextColor(genericTextColor);
+			Globals.getSettings().setEditorSelectedTextBackground(genericSelectedTextBackground);
+			Globals.getSettings().setEditorSelectedLineBackground(genericSelectedLineBackground);
 		}
 
 		// User has clicked "Reset" button.  Put everything back to initial state.
@@ -409,6 +421,112 @@ public class SettingsEditorAction extends GuiAction
 			return otherSettingsPanel;
 		}
 
+		private JPanel buildGenericColorsPanel() {
+			JPanel genericColorsPanel = new JPanel();
+			genericEnabledBackground = Globals.getSettings().getEditorEnabledBackground();
+			genericDisabledBackground = Globals.getSettings().getEditorDisabledBackground();
+			genericTextColor = Globals.getSettings().getEditorTextColor();
+			genericSelectedLineBackground = Globals.getSettings().getEditorSelectedLineBackground();
+			genericSelectedTextBackground = Globals.getSettings().getEditorSelectedTextBackground();
+
+			final JLabel[] samples = new JLabel[5];
+			String[] sampleText = new String[]{
+				"Enabled Editor",
+				"Disabled Editor",
+				"Text Color",
+				"Current Line",
+				"Selection"
+			};
+
+			JButton[] colorButtons = new JButton[5];
+
+			for (int i = 0; i < samples.length; i++) {
+				samples[i] = new JLabel();
+				samples[i].setOpaque(true);
+				samples[i].setHorizontalAlignment(SwingConstants.CENTER);
+				samples[i].setBorder(BorderFactory.createLineBorder(Color.black));
+				samples[i].setToolTipText(SAMPLE_TOOL_TIP_TEXT);
+				samples[i].setBackground(genericEnabledBackground);
+				samples[i].setForeground(genericTextColor);
+				samples[i].setText(sampleText[i]);
+			}
+
+			colorButtons[0] = new ColorSelectButton();
+			colorButtons[0].setBackground(genericEnabledBackground);
+			colorButtons[0].addActionListener(e -> {
+				JButton button = (JButton) e.getSource();
+				Color newColor = JColorChooser.showDialog(null, "Set Background Color", button.getBackground());
+				if (newColor != null) {
+					button.setBackground(genericEnabledBackground = newColor);
+					samples[0].setBackground(newColor);
+				}
+			});
+
+			samples[1].setBackground(genericDisabledBackground);
+			colorButtons[1] = new ColorSelectButton();
+			colorButtons[1].setBackground(genericDisabledBackground);
+			colorButtons[1].addActionListener(e -> {
+				JButton button = (JButton) e.getSource();
+				Color newColor = JColorChooser.showDialog(null, "Set Background Color", button.getBackground());
+				if (newColor != null) {
+					button.setBackground(genericDisabledBackground = newColor);
+					samples[1].setBackground(newColor);
+				}
+			});
+
+			colorButtons[2] = new ColorSelectButton();
+			colorButtons[2].setBackground(genericTextColor);
+			colorButtons[2].addActionListener(e -> {
+				JButton button = (JButton) e.getSource();
+				Color newColor = JColorChooser.showDialog(null, "Set Text Color", button.getBackground());
+				if (newColor != null) {
+					button.setBackground(genericTextColor = newColor);
+					samples[2].setForeground(newColor);
+				}
+			});
+
+			samples[3].setBackground(genericSelectedLineBackground);
+			colorButtons[3] = new ColorSelectButton();
+			colorButtons[3].setBackground(genericSelectedLineBackground);
+			colorButtons[3].addActionListener(e -> {
+				JButton button = (JButton) e.getSource();
+				Color newColor = JColorChooser.showDialog(null, "Set Selection Background Color", button.getBackground());
+				if (newColor != null) {
+					button.setBackground(genericSelectedLineBackground = newColor);
+					samples[3].setBackground(newColor);
+				}
+			});
+
+			samples[4].setBackground(genericSelectedTextBackground);
+			colorButtons[4] = new ColorSelectButton();
+			colorButtons[4].setBackground(genericSelectedTextBackground);
+			colorButtons[4].addActionListener(e -> {
+				JButton button = (JButton) e.getSource();
+				Color newColor = JColorChooser.showDialog(null, "Set Selection Background Color", button.getBackground());
+				if (newColor != null) {
+					button.setBackground(genericSelectedTextBackground = newColor);
+					samples[4].setBackground(newColor);
+				}
+			});
+
+			// build a grid
+			genericColorsPanel.setLayout(new BorderLayout());
+			JPanel labelPreviewPanel = new JPanel(new GridLayout(samples.length, 2, gridVGap, gridHGap));
+			JPanel buttonsPanel = new JPanel(new GridLayout(samples.length, 1, gridVGap, gridHGap));
+
+			for (int i = 0; i < samples.length; i++) {
+				labelPreviewPanel.add(new JLabel(sampleText[i], SwingConstants.RIGHT));
+				labelPreviewPanel.add(samples[i]);
+				buttonsPanel.add(colorButtons[i]);
+			}
+
+			labelPreviewPanel.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+			buttonsPanel.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+			genericColorsPanel.add(labelPreviewPanel, BorderLayout.WEST);
+			genericColorsPanel.add(buttonsPanel, BorderLayout.CENTER);
+			return genericColorsPanel;
+		}
+
 
 		// control style (color, plain/italic/bold) for syntax highlighting
 		private JPanel buildSyntaxStylePanel()
@@ -451,7 +569,8 @@ public class SettingsEditorAction extends GuiAction
 					samples[count].setHorizontalAlignment(SwingConstants.CENTER);
 					samples[count].setBorder(BorderFactory.createLineBorder(Color.black));
 					samples[count].setText(sampleText[i]);
-					samples[count].setBackground(Color.WHITE);
+					samples[count].setBackground(Globals.getSettings().getEditorEnabledBackground());
+					samples[count].setForeground(Globals.getSettings().getEditorTextColor());
 					samples[count].setToolTipText(SAMPLE_TOOL_TIP_TEXT);
 					foregroundButtons[count] = new ColorSelectButton(); // defined in SettingsHighlightingAction
 					foregroundButtons[count].addActionListener(new ForegroundChanger(count));

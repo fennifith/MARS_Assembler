@@ -1292,6 +1292,26 @@ public class Settings extends Observable
 		}
 	}
 
+	public void setEditorEnabledBackground(Color color) {
+		setColorSettingByPosition(EDITOR_ENABLED_BACKGROUND, color);
+	}
+
+	public void setEditorDisabledBackground(Color color) {
+		setColorSettingByPosition(EDITOR_DISABLED_BACKGROUND, color);
+	}
+
+	public void setEditorTextColor(Color color) {
+		setColorSettingByPosition(EDITOR_TEXT_COLOR, color);
+	}
+
+	public void setEditorSelectedLineBackground(Color color) {
+		setColorSettingByPosition(EDITOR_SELECTED_LINE_BACKGROUND, color);
+	}
+
+	public void setEditorSelectedTextBackground(Color color) {
+		setColorSettingByPosition(EDITOR_SELECTED_TEXT_BACKGROUND, color);
+	}
+
 	/**
 	 * Store the editor's enabled/disabled background colors.
 	 * @param enabledColor The editor's background color when it is enabled, or editable.
