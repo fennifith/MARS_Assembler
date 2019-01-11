@@ -12,6 +12,8 @@ This is a fork of Jarrett's mirror of the MARS Assembler source code, mainly for
 [![Build Status](https://travis-ci.com/fennifith/MARS_Assembler.svg)](https://travis-ci.com/fennifith/MARS_Assembler)
 [![Discord](https://img.shields.io/discord/514625116706177035.svg)](https://discord.gg/s5Se8vU)
 
+If for some reason you would like to obtain a copy of this version of MARS without compiling it from source, you can find a .jar file [here](../../releases/).
+
 Huge thanks to Jarrett for maintaining the [original fork](https://github.com/JarrettBillingsley/MARS_Assembler) of MARS.
 
 ## Documentation
