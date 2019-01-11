@@ -12,6 +12,7 @@
 package mars.venus.editors.jeditsyntax;
 
 import mars.venus.editors.jeditsyntax.tokenmarker.*;
+import mars.Globals;
 import javax.swing.ToolTipManager;
 import javax.swing.text.*;
 import javax.swing.JComponent;
@@ -48,8 +49,8 @@ public class TextAreaPainter extends JComponent implements TabExpander
 		setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
 
 		setFont(new Font("Courier New" /*"Monospaced"*/, Font.PLAIN, 14));
-		setForeground(Color.black);
-		setBackground(Color.white);
+		setForeground(defaults.foregroundColor);
+		setBackground(defaults.enabledBackgroundColor);
 
 		tabSizeChars = defaults.tabSize;
 		blockCaret = defaults.blockCaret;

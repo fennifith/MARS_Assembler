@@ -247,6 +247,12 @@ public class Settings extends Observable
 	public static final int EDITOR_ENABLED_BACKGROUND = 12;
 	/** RGB color for the disabled editor background */
 	public static final int EDITOR_DISABLED_BACKGROUND = 13;
+	/** RGB color for standard un-syntax-styled editor text */
+	public static final int EDITOR_TEXT_COLOR = 14;
+	/** RGB color for the current line background of the editor */
+	public static final int EDITOR_SELECTED_LINE_BACKGROUND = 15;
+	/** RGB color for the text selection background of the editor */
+	public static final int EDITOR_SELECTED_TEXT_BACKGROUND = 16;
 	// Match the above by position.
 	private static final String[] colorSettingsKeys =
 	{
@@ -255,7 +261,8 @@ public class Settings extends Observable
 		"TextSegmentDelaySlotHighlightBackground", "TextSegmentDelaySlotHighlightForeground",
 		"DataSegmentHighlightBackground", "DataSegmentHighlightForeground",
 		"RegisterHighlightBackground", "RegisterHighlightForeground",
-		"EditorEnabledBackground", "EditorDisabledBackground"
+		"EditorEnabledBackground", "EditorDisabledBackground", "EditorTextColor",
+		"EditorSelectedLineBackground", "EditorSelectedTextBackground"
 	};
 
 	/** 
@@ -267,7 +274,7 @@ public class Settings extends Observable
 	private static String[] defaultColorSettingsValues =
 	{
 		"0x00e0e0e0", "0", "0x00ffffff", "0", "0x00ffff99", "0", "0x0033ff00", "0", "0x0099ccff", "0", "0x0099cc55", "0",
-		"0x00ffffff", "0x00c0c0c0"
+		"0x00ffffff", "0x00c0c0c0", "0", "0x00eeeeee", "0x00ccccff"
 	};
 
 
@@ -743,6 +750,31 @@ public class Settings extends Observable
 	 */
 	public Color getEditorDisabledBackground() {
 		return getColorSettingByPosition(EDITOR_DISABLED_BACKGROUND);
+	}
+
+	/**
+	 * Retrieve the editor's default text color setting for un-syntax highlighted
+	 * characters.
+	 * @return Color
+	 */
+	public Color getEditorTextColor() {
+		return getColorSettingByPosition(EDITOR_TEXT_COLOR);
+	}
+
+	/**
+	 * Retrieve the editor's selected line background color setting.
+	 * @return Color
+	 */
+	public Color getEditorSelectedLineBackground() {
+		return getColorSettingByPosition(EDITOR_SELECTED_LINE_BACKGROUND);
+	}
+
+	/**
+	 * Retrieve the editor's selected text background color setting.
+	 * @return Color
+	 */
+	public Color getEditorSelectedTextBackground() {
+		return getColorSettingByPosition(EDITOR_SELECTED_TEXT_BACKGROUND);
 	}
 
 
