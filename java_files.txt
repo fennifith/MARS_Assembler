@@ -217,4 +217,5 @@
 ./mars/MarsLaunch.java
 ./mars/MIPSprogram.java
 ./mars/Settings.java
+./mars/Setting.java
 ./mars/Globals.java
